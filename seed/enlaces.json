@@ -1,0 +1,28 @@
+[
+  {
+    "grupo": "Automatización",
+    "enlaces": [
+      { "nombre": "n8n (workflows)", "url": "https://botrue-n8n.zbb3az.easypanel.host" },
+      { "nombre": "Evolution API (manager)", "url": "https://botrue-evolution.zbb3az.easypanel.host/manager" },
+      { "nombre": "Consola de Anthropic (consumo y claves)", "url": "https://console.anthropic.com" },
+      { "nombre": "Google Cloud (cliente OAuth)", "url": "https://console.cloud.google.com/auth/clients" }
+    ]
+  },
+  {
+    "grupo": "Datos de Ferronol",
+    "enlaces": [
+      { "nombre": "Hoja de registro", "url": "https://docs.google.com/spreadsheets/d/1rg-bBhZiGJwGonYXb3OXO9bQh0Ir5ETGxLJdZGGjwB0/edit" },
+      { "nombre": "Drive · Producción", "url": "https://drive.google.com/drive/folders/1m0_NOzwBRnAQui1r96yTffjXXv7Ef2HJ" },
+      { "nombre": "Drive · Seguridad", "url": "https://drive.google.com/drive/folders/1JenVEIJVHib6Mt7fBV-GrapFWlHMR0e8" },
+      { "nombre": "Drive · _Entrada (debe estar vacía)", "url": "https://drive.google.com/drive/folders/1roZk6ONRuT0RyiQeuQgTMC2tyDmWB9cT" }
+    ]
+  },
+  {
+    "grupo": "Guías publicadas (artefactos para compartir)",
+    "enlaces": [
+      { "nombre": "Guía del trabajador", "url": "https://claude.ai/artifact/EoViUcnE7FPJzNyfSGB6tr" },
+      { "nombre": "Guía del administrador", "url": "https://claude.ai/artifact/MWsZpqs6RH8RS6HFQjideV" },
+      { "nombre": "Manual técnico (no compartir)", "url": "https://claude.ai/artifact/4qaaR7UdFgzD844GMhRmzJ" }
+    ]
+  }
+]

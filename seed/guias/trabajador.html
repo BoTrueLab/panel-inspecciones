@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+<title>Cómo reportar inspecciones</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: una columna de lectura; simulador de WhatsApp a la derecha en escritorio, debajo en móvil */
+:root{
+  --bg:#f4f5f6; --paper:#ffffff; --ink:#1b2024; --muted:#5d6670; --line:#dde1e5;
+  --red:#a20000; --red-soft:#f7e3e3; --steel:#1f497d; --steel-soft:#e3ebf5;
+  --wa-bg:#e9e1d6; --wa-out:#d9fdd3; --wa-in:#ffffff; --wa-ink:#111b21; --wa-meta:#667781;
+  --display:"Archivo",system-ui,sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#14181b; --paper:#1c2226; --ink:#e8ecef; --muted:#9aa5ae; --line:#2e363c;
+  --red:#ff6b6b; --red-soft:#3a1d1f; --steel:#8db4e8; --steel-soft:#1d2a3a;
+  --wa-bg:#0b141a; --wa-out:#005c4b; --wa-in:#202c33; --wa-ink:#e9edef; --wa-meta:#8696a0; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14181b; --paper:#1c2226; --ink:#e8ecef; --muted:#9aa5ae; --line:#2e363c;
+  --red:#ff6b6b; --red-soft:#3a1d1f; --steel:#8db4e8; --steel-soft:#1d2a3a;
+  --wa-bg:#0b141a; --wa-out:#005c4b; --wa-in:#202c33; --wa-ink:#e9edef; --wa-meta:#8696a0; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,5vw,40px);font-weight:800}
+h2{font-size:24px;font-weight:800;margin-bottom:12px}
+h3{font-size:17px;font-weight:600}
+.eyebrow{font:600 12px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--red)}
+.lead{color:var(--muted);max-width:62ch;margin:10px 0 0}
+header{display:grid;gap:8px;margin-bottom:28px}
+.groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:24px 0 36px}
+.group{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:grid;gap:6px}
+.group .tag{font:600 12px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;padding:5px 8px;border-radius:4px;justify-self:start}
+.group.pro .tag{background:var(--red-soft);color:var(--red)}
+.group.seg .tag{background:var(--steel-soft);color:var(--steel)}
+.group p{margin:0;color:var(--muted)}
+.group ul{margin:4px 0 0;padding-left:18px}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:32px;align-items:start}
+@media (max-width:860px){.main{grid-template-columns:minmax(0,1fr)}}
+section{margin-bottom:36px}
+.steps{list-style:none;padding:0;margin:0;display:grid;gap:14px;counter-reset:s}
+.steps li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;counter-increment:s}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--ink);color:var(--bg);font:800 15px var(--display)}
+.steps p{margin:2px 0 0;color:var(--muted)}
+.example{font-style:italic;background:var(--paper);border-left:3px solid var(--red);padding:8px 12px;margin-top:6px;border-radius:0 6px 6px 0;color:var(--ink)}
+.callout{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.callout.warn{border-color:var(--red);background:var(--red-soft)}
+.check{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.check label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.check input{margin-top:5px;accent-color:var(--red);width:18px;height:18px}
+details{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px 16px}
+details+details{margin-top:8px}
+summary{cursor:pointer;font-weight:600}
+details p{margin:8px 0 0;color:var(--muted)}
+/* Simulador */
+.sim{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.sim-tabs{display:flex;flex-wrap:wrap;gap:6px;padding:12px;border-bottom:1px solid var(--line)}
+.sim-tabs button{font:500 13px var(--body);border:1px solid var(--line);background:transparent;color:var(--ink);padding:6px 10px;border-radius:999px;cursor:pointer}
+.sim-tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.sim-tabs button:focus-visible,.sim-ctrl button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.wa-head{display:flex;gap:10px;align-items:center;padding:10px 14px;background:var(--steel);color:#fff}
+.wa-head .av{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.25);display:grid;place-items:center;font:800 13px var(--display)}
+.wa-head small{display:block;opacity:.8;font-size:12px}
+.chat{background:var(--wa-bg);height:400px;overflow-y:auto;padding:14px 10px;display:flex;flex-direction:column;gap:6px}
+.msg{max-width:86%;padding:6px 9px 4px;border-radius:8px;font-size:14px;line-height:1.4;color:var(--wa-ink);box-shadow:0 1px .5px rgba(0,0,0,.13);white-space:pre-line;animation:pop .2s ease-out}
+.msg.out{align-self:flex-end;background:var(--wa-out)}
+.msg.in{align-self:flex-start;background:var(--wa-in)}
+.msg .who{font-size:12px;font-weight:600;color:#c2410c;display:block}
+.msg .meta{display:block;text-align:right;font-size:11px;color:var(--wa-meta)}
+.msg .quote{display:block;border-left:3px solid #06cf9c;background:rgba(0,0,0,.06);padding:4px 6px;border-radius:4px;margin-bottom:4px;font-size:12px;color:var(--wa-meta)}
+.photo{display:block;width:200px;max-width:100%;aspect-ratio:4/3;border-radius:6px;margin-bottom:4px;background:linear-gradient(135deg,#7c8a96,#4b5864);position:relative;overflow:hidden}
+.photo::after{content:attr(data-label);position:absolute;left:8px;bottom:6px;color:#fff;font-size:12px;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.sys{align-self:center;background:rgba(255,255,255,.7);color:#54656f;font-size:12px;padding:4px 10px;border-radius:6px}
+:root[data-theme="dark"] .sys{background:#182229;color:#8696a0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sys{background:#182229;color:#8696a0}}
+.sim-ctrl{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:12px;border-top:1px solid var(--line)}
+.sim-ctrl p{margin:0;font-size:13px;color:var(--muted);flex:1;min-width:0}
+.sim-ctrl button{font:600 14px var(--body);background:var(--red);color:#fff;border:0;border-radius:8px;padding:9px 14px;cursor:pointer;white-space:nowrap}
+.sim-ctrl button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+@keyframes pop{from{transform:translateY(6px);opacity:.3}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.msg{animation:none}}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Ferronol · Bio Oils · Guía para quien reporta</span>
+    <h1>Cómo reportar una inspección por WhatsApp</h1>
+    <p class="lead">Envías una foto y una frase al grupo. El sistema la guarda, la ordena y te contesta con un número de reporte en 2 a 5 minutos. No hay que rellenar nada más.</p>
+  </header>
+
+  <div class="groups">
+    <div class="group pro">
+      <span class="tag">Grupo Inspecciones Producción</span>
+      <h3>Trabajo, limpieza, medios y avance</h3>
+      <ul><li>Estado de una zona o de un trabajo</li><li>Equipos averiados o falta de material</li><li>Esperas, cambios de planificación, trabajo no previsto</li></ul>
+    </div>
+    <div class="group seg">
+      <span class="tag">Grupo Inspecciones Seguridad</span>
+      <h3>Riesgos para las personas</h3>
+      <ul><li>Actos inseguros (sin EPI, atajos…)</li><li>Condiciones inseguras (suelo resbaladizo, barandilla rota…)</li><li>Incidentes, casi accidentes y buenas prácticas</li></ul>
+    </div>
+  </div>
+
+  <div class="main">
+    <div>
+      <section>
+        <h2>Enviar un reporte</h2>
+        <ol class="steps">
+          <li><div><h3>Haz la foto y envíala al grupo que toque</h3><p>Si necesitas varias fotos del mismo asunto, mándalas seguidas. Todas las que envíes con menos de 3 minutos entre una y otra forman un solo reporte.</p></div></li>
+          <li><div><h3>Escribe en qué cliente, dónde, qué ves y si es el antes o el después</h3><p>En el pie de la foto o en un mensaje justo después. Basta un texto por reporte. Empieza por el cliente o la instalación: así el reporte queda en su sitio.</p>
+            <div class="example">«Bio Oils, cargaderos, derrame de aceite en el pasillo, sin señalizar»</div>
+            <div class="example">«Impala, taller, hidrolimpiadora averiada, esto es el antes»</div></div></li>
+          <li><div><h3>Espera la confirmación</h3><p>En unos minutos el sistema responde en el grupo con el número del reporte (por ejemplo <strong>PRO-0012</strong> o <strong>SEG-0004</strong>) y un resumen. Si ves algo mal en el resumen, corrígelo como se explica abajo.</p></div></li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Cuando esté resuelto: el después</h2>
+        <ol class="steps">
+          <li><div><h3>Busca la confirmación del reporte original</h3><p>Es el mensaje del sistema que empieza por ✅ y el número del reporte.</p></div></li>
+          <li><div><h3>Mantén pulsado ese mensaje y elige «Responder»</h3><p>Es importante responder a ese mensaje: así el sistema sabe a qué reporte corresponde.</p></div></li>
+          <li><div><h3>Envía la foto del después con una frase</h3><p>Por ejemplo «ya reparada» o «zona limpia». Se crea un reporte nuevo vinculado al original, y el original pasa a <strong>Cerrado</strong>.</p></div></li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Corregir o añadir algo</h2>
+        <p>Responde a la confirmación del reporte <strong>solo con texto</strong>. Se guarda como comentario en ese reporte y el responsable lo revisa. Un texto sin foto no cierra el reporte: para cerrarlo hace falta la foto del después.</p>
+      </section>
+
+      <section class="callout warn">
+        <h3>Las notas de voz todavía no se procesan</h3>
+        <p style="margin:6px 0 0">Si mandas un audio, el sistema te pedirá que lo escribas. Escribe siempre la descripción.</p>
+      </section>
+
+      <section style="margin-top:36px">
+        <h2>Antes de enviar, repasa</h2>
+        <ul class="check">
+          <li><label><input type="checkbox" id="c1"> La foto muestra el problema y se entiende dónde es (una foto de lejos para situarlo y otra de cerca si hace falta).</label></li>
+          <li><label><input type="checkbox" id="c2"> He escrito el cliente o la instalación, y la zona o el equipo.</label></li>
+          <li><label><input type="checkbox" id="c3"> He dicho si es el antes, el después o solo una observación.</label></li>
+          <li><label><input type="checkbox" id="c4"> Lo envío al grupo correcto: Producción o Seguridad.</label></li>
+          <li><label><input type="checkbox" id="c5"> No aparecen caras ni datos personales que no hagan falta.</label></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Preguntas frecuentes</h2>
+        <details><summary>¿Y si me equivoco de grupo?</summary><p>No pasa nada. El reporte se guarda igual y el sistema lo marca para que el responsable lo revise y lo cambie de sitio si hace falta.</p></details>
+        <details><summary>He mandado varias fotos, ¿se crean varios reportes?</summary><p>No, si las mandas seguidas (menos de 3 minutos entre una y otra). Todas forman un solo reporte con un solo texto.</p></details>
+        <details><summary>No me ha contestado el sistema</summary><p>Espera 5 minutos. Si sigue sin contestar, avisa al responsable: el reporte no se pierde, queda guardado y se procesa en cuanto se resuelva.</p></details>
+        <details><summary>¿Responde a los saludos o a los mensajes sueltos?</summary><p>No. Los mensajes sin foto que no responden a un reporte (saludos, «ok», «gracias») no hacen nada.</p></details>
+        <details><summary>¿Quién ve mis reportes?</summary><p>Las personas del grupo y los responsables de Ferronol que gestionan el registro. Las fotos y los datos se guardan en el espacio de Google de Ferronol, con acceso restringido.</p></details>
+      </section>
+    </div>
+
+    <aside class="sim" aria-label="Simulación del grupo de WhatsApp">
+      <div class="sim-tabs" role="group" aria-label="Elige un caso">
+        <button type="button" data-s="reportar" aria-pressed="true">Reportar</button>
+        <button type="button" data-s="despues" aria-pressed="false">El después</button>
+        <button type="button" data-s="corregir" aria-pressed="false">Corregir</button>
+        <button type="button" data-s="audio" aria-pressed="false">Nota de voz</button>
+      </div>
+      <div class="wa-head"><span class="av" id="wa-av">SEG</span><div><strong id="wa-title">Inspecciones Seguridad</strong><small>Tú, Sistema de inspecciones, compañeros</small></div></div>
+      <div class="chat" id="chat" aria-live="polite"></div>
+      <div class="sim-ctrl"><p id="hint">Pulsa «Siguiente» para ver el ejemplo paso a paso.</p><button type="button" class="ghost" id="reset">Repetir</button><button type="button" id="next">Siguiente</button></div>
+    </aside>
+  </div>
+
+  <footer>Ejemplos ilustrativos. El texto exacto de la confirmación puede variar según el reporte.</footer>
+</div>
+
+<script>
+const S = {
+  reportar: { title:'Inspecciones Seguridad', av:'SEG', steps:[
+    {t:'out', photo:'Pasillo de cargaderos', text:'Bio Oils, cargaderos, derrame de aceite en el pasillo, sin señalizar', hint:'Foto y texto en el mismo mensaje: cliente, zona y qué pasa.'},
+    {t:'sys', text:'2 a 5 minutos después', hint:'El sistema espera por si mandas más fotos.'},
+    {t:'in', who:'Sistema de inspecciones', text:'✅ *SEG-0004* registrado\n📍 Bio Oils · Cargaderos · Condición insegura · Caída al mismo nivel\n🚦 Riesgo: *Importante* (Alta × Dañino) → aviso enviado a prevención\n🛠️ Medida inmediata: señalizar y recoger con absorbente\n📷 1 archivo(s) · Antes · Estado: Abierto\n↩️ Responde a este mensaje con la foto del DESPUÉS cuando esté resuelto.', hint:'Confirmación con el número del reporte. Si el riesgo es alto, prevención recibe un aviso.'}]},
+  despues: { title:'Inspecciones Producción', av:'PRO', steps:[
+    {t:'in', who:'Sistema de inspecciones', text:'✅ *PRO-0012* registrado\n📍 Impala · Taller · 6. Falta de útiles y herramientas\n📝 Hidrolimpiadora averiada.\n📷 1 archivo(s) · Antes · Estado: Abierto', hint:'Esta es la confirmación del reporte original.'},
+    {t:'sys', text:'Mantienes pulsado el mensaje → Responder', hint:'Responder a la confirmación vincula los dos reportes.'},
+    {t:'out', quote:'PRO-0012 registrado', photo:'Hidrolimpiadora reparada', text:'Ya reparada', hint:'Foto del después como respuesta.'},
+    {t:'in', who:'Sistema de inspecciones', text:'✅ *PRO-0013* registrado\n📍 Impala · Taller · Después de PRO-0012\n📷 1 archivo(s) · Después · Estado: Cerrado\n🔗 PRO-0012 pasa a Cerrado', hint:'El original queda cerrado automáticamente.'}]},
+  corregir: { title:'Inspecciones Producción', av:'PRO', steps:[
+    {t:'in', who:'Sistema de inspecciones', text:'✅ *PRO-0015* registrado\n📍 Lugar sin indicar · 1. Inspección general', hint:'El texto no decía dónde era.'},
+    {t:'out', quote:'PRO-0015 registrado', text:'Es en Bio Oils, Refino 2, junto a la bomba de trasiego', hint:'Respondes a la confirmación solo con texto.'},
+    {t:'sys', text:'El texto se añade como comentario al PRO-0015', hint:'No contesta: el comentario queda para que lo revise el responsable.'}]},
+  audio: { title:'Inspecciones Seguridad', av:'SEG', steps:[
+    {t:'out', text:'🎤 Nota de voz · 0:12', hint:'Mandas un audio.'},
+    {t:'in', who:'Sistema de inspecciones', text:'🎙️ Todavía no proceso notas de voz. Por favor, escribe la descripción en texto (puedes responder a tu foto).', hint:'Responde al momento pidiendo texto.'}]},
+};
+let cur = 'reportar', i = 0;
+const chat = document.getElementById('chat'), hint = document.getElementById('hint'), next = document.getElementById('next');
+function el(m){
+  const d = document.createElement('div');
+  if (m.t === 'sys'){ d.className = 'sys'; d.textContent = m.text; return d; }
+  d.className = 'msg ' + m.t;
+  if (m.who){ const w = document.createElement('span'); w.className='who'; w.textContent = m.who; d.appendChild(w); }
+  if (m.quote){ const q = document.createElement('span'); q.className='quote'; q.textContent = m.quote; d.appendChild(q); }
+  if (m.photo){ const p = document.createElement('span'); p.className='photo'; p.dataset.label = '📷 ' + m.photo; d.appendChild(p); }
+  if (m.text){ d.appendChild(document.createTextNode(m.text.replace(/\*/g,''))); }
+  const meta = document.createElement('span'); meta.className='meta'; meta.textContent = m.t === 'out' ? '10:42 ✓✓' : '10:44'; d.appendChild(meta);
+  return d;
+}
+function load(s){
+  cur = s; i = 0; chat.innerHTML = '';
+  document.querySelectorAll('.sim-tabs button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.s === s)));
+  document.getElementById('wa-title').textContent = S[s].title;
+  document.getElementById('wa-av').textContent = S[s].av;
+  step();
+}
+function step(){
+  const st = S[cur].steps;
+  if (i >= st.length) return;
+  chat.appendChild(el(st[i])); hint.textContent = st[i].hint; i++;
+  chat.scrollTop = chat.scrollHeight;
+  next.disabled = i >= st.length; next.style.opacity = next.disabled ? .5 : 1;
+}
+document.querySelectorAll('.sim-tabs button').forEach(b => b.addEventListener('click', () => load(b.dataset.s)));
+next.addEventListener('click', step);
+document.getElementById('reset').addEventListener('click', () => load(cur));
+load('reportar');
+</script>
+
+</body></html>

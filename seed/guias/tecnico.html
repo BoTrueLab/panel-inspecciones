@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+<title>Manual técnico inspecciones</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: manual técnico. Índice lateral fijo, contenido en una columna; tablas y bloques de código con scroll propio */
+:root{
+  --bg:#f3f4f2; --paper:#fff; --ink:#1a1f1d; --muted:#5b6461; --line:#dadfdc;
+  --accent:#a20000; --accent-soft:#f6e2e2; --info:#1f497d; --info-soft:#e3ebf5; --ok:#2f7d4f; --ok-soft:#e1f2e7; --warn:#9a6a00; --warn-soft:#fbf0d4;
+  --code-bg:#f0f2f1;
+  --display:"Archivo",system-ui,sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#131716; --paper:#1b201e; --ink:#e7ebe9; --muted:#9aa49f; --line:#2c3431;
+  --accent:#ff6b6b; --accent-soft:#3a1d1f; --info:#8db4e8; --info-soft:#1d2a3a; --ok:#6fcf97; --ok-soft:#173226; --warn:#e6b84a; --warn-soft:#352a12;
+  --code-bg:#222826; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#131716; --paper:#1b201e; --ink:#e7ebe9; --muted:#9aa49f; --line:#2c3431;
+  --accent:#ff6b6b; --accent-soft:#3a1d1f; --info:#8db4e8; --info-soft:#1d2a3a; --ok:#6fcf97; --ok-soft:#173226; --warn:#e6b84a; --warn-soft:#352a12;
+  --code-bg:#222826; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15.5px/1.6 var(--body);margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-block:32px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:230px minmax(0,1fr);gap:40px}
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);gap:20px}}
+nav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);align-self:start;display:grid;gap:1px;max-height:calc(100vh - 48px);overflow-y:auto}
+nav a{color:var(--muted);text-decoration:none;font-size:13.5px;padding:5px 10px;border-left:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--ink);border-left-color:var(--accent);outline:none}
+@media (max-width:900px){nav{position:static;display:flex;flex-wrap:wrap;gap:6px;max-height:none}nav a{border:1px solid var(--line);border-radius:999px;padding:3px 10px}}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,4.5vw,38px);font-weight:800}
+h2{font-size:23px;font-weight:800;margin:0 0 12px;padding-top:6px}
+h3{font-size:16.5px;font-weight:600;margin:18px 0 6px}
+p,li{max-width:72ch}
+p{margin:0 0 10px}
+ul,ol{margin:0 0 10px;padding-left:20px}
+li{margin-bottom:4px}
+.eyebrow{font:600 12px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+section{margin-bottom:46px;scroll-margin-top:24px}
+code{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:4px;word-break:break-word}
+pre{font:13px/1.55 var(--mono);background:var(--code-bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;overflow-x:auto;margin:0 0 12px}
+.tbl{overflow-x:auto;background:var(--paper);border:1px solid var(--line);border-radius:10px;margin-bottom:12px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:12px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.box{border-left:3px solid var(--info);background:var(--info-soft);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}
+.box.warn{border-color:var(--warn);background:var(--warn-soft)}
+.box.red{border-color:var(--accent);background:var(--accent-soft)}
+.box.ok{border-color:var(--ok);background:var(--ok-soft)}
+.box p:last-child,.box ul:last-child{margin-bottom:0}
+.status{display:inline-block;font:600 11.5px var(--body);padding:2px 8px;border-radius:999px;white-space:nowrap}
+.s-ok{background:var(--ok-soft);color:var(--ok)} .s-warn{background:var(--warn-soft);color:var(--warn)} .s-red{background:var(--accent-soft);color:var(--accent)}
+/* Calculadora */
+.calc{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+@media (max-width:720px){.calc{grid-template-columns:minmax(0,1fr)}}
+.calc label{display:grid;gap:4px;font-size:13.5px;font-weight:500}
+.calc input,.calc select{font:15px var(--body);padding:7px 9px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.calc input:focus-visible,.calc select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.calc .f{display:grid;gap:12px}
+.out{display:grid;gap:8px;align-content:start}
+.out .big{font:800 34px var(--display);font-variant-numeric:tabular-nums}
+.out small{color:var(--muted)}
+.mermaid{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px;overflow-x:auto}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+
+<div class="wrap">
+  <nav aria-label="Índice">
+    <a href="#resumen">Estado actual</a>
+    <a href="#arquitectura">Arquitectura</a>
+    <a href="#datos">Datos de la instalación</a>
+    <a href="#archivos">Archivos y despliegue</a>
+    <a href="#modelo">Modelo de IA</a>
+    <a href="#costes">Costes</a>
+    <a href="#prompts">Prompts</a>
+    <a href="#multicliente">Clientes, zonas y categorías</a>
+    <a href="#config">Configuración y panel</a>
+    <a href="#bot">Configurar la línea (bot)</a>
+    <a href="#entrada">Carpeta _Entrada</a>
+    <a href="#nuevos">Números no registrados</a>
+    <a href="#seguridad">Seguridad: estado</a>
+    <a href="#servidor">Alojar en otro servidor</a>
+    <a href="#meta">Plan B: API oficial de Meta</a>
+    <a href="#mantenimiento">Mantenimiento</a>
+    <a href="#problemas">Problemas frecuentes</a>
+    <a href="#pendientes">Pendientes</a>
+  </nav>
+
+  <main>
+    <header style="margin-bottom:30px;display:grid;gap:8px">
+      <span class="eyebrow">Uso interno · No compartir con el cliente</span>
+      <h1>Automatización de inspecciones: manual técnico</h1>
+      <p style="color:var(--muted)">Todo lo que hace falta para mantener, cambiar, mover o ampliar el sistema de inspecciones por WhatsApp de Ferronol. Estado a 24/11/2026.</p>
+    </header>
+
+    <section id="resumen">
+      <h2>Estado actual</h2>
+      <div class="tbl"><table>
+        <tbody>
+          <tr><td>Flujo de entrada (WhatsApp → Drive y hoja)</td><td><span class="status s-ok">En marcha</span></td></tr>
+          <tr><td>Flujo de proceso (IA → carpeta → fila → confirmación → aviso)</td><td><span class="status s-ok">En marcha</span></td></tr>
+          <tr><td>Modelo de IA</td><td>Claude Haiku 5.5 (económico)</td></tr>
+          <tr><td>Pruebas reales superadas</td><td>Reporte de Producción, de Seguridad, comentario en respuesta, notas de voz</td></tr>
+          <tr><td>Multicliente (Catálogo de clientes, zonas y categorías; columna Cliente)</td><td><span class="status s-ok">Desplegado</span> en el workflow 02 (25/11). Usa el catálogo inicial hasta que exista la pestaña.</td></tr>
+          <tr><td>Pestañas Resumen, Configuración y Catálogo + columna Cliente en la hoja</td><td><span class="status s-warn">Pendiente</span>: ejecutar el workflow «Instalar panel» en n8n</td></tr>
+          <tr><td>Número de aviso de seguridad</td><td><span class="status s-warn">Provisional</span>: 34689700626 (prueba)</td></tr>
+          <tr><td>Prompts (con tus cambios: IMPALA y otras instalaciones)</td><td><span class="status s-ok">Desplegados</span> (25/11)</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="arquitectura">
+      <h2>Arquitectura</h2>
+      <pre class="mermaid">
+flowchart LR
+  A[Grupo Producción] --> E
+  B[Grupo Seguridad] --> E
+  E[Evolution API<br/>instancia optimizador] -- webhook MESSAGES_UPSERT --> W1
+  subgraph n8n
+    W1[01 Entrada WhatsApp<br/>al instante]
+    W2[02 Procesar reportes<br/>cada 2 min]
+  end
+  W1 -- foto --> D1[(Drive _Entrada)]
+  W1 -- fila --> S1[(Hoja: Mensajes)]
+  S1 --> W2
+  D1 --> W2
+  W2 -- fotos --> C[Claude API]
+  W2 -- mueve y renombra --> D2[(Drive Producción / Seguridad)]
+  W2 -- fila --> S2[(Hoja: Producción / Seguridad)]
+  W2 -- confirmación / aviso --> E
+      </pre>
+      <ul>
+        <li><strong>Flujo 1</strong> no analiza nada: guarda rápido para no perder mensajes aunque la IA falle.</li>
+        <li><strong>Flujo 2</strong> agrupa por grupo y autor (fotos con menos de 3 min entre sí = un reporte), espera 2 min de silencio, marca los mensajes <code>EN_PROCESO</code>, procesa los reportes de uno en uno y deja todo <code>PROCESADO</code>. Si una ejecución se corta, a los 15 min reintenta lo que quedó <code>EN_PROCESO</code>.</li>
+        <li>El <strong>antes/después</strong> se vincula cuando el trabajador responde a la confirmación del bot (WhatsApp manda el id del mensaje citado).</li>
+        <li>El <strong>nivel de riesgo</strong> lo calcula el código con la matriz INSHT, no la IA.</li>
+      </ul>
+    </section>
+
+    <section id="datos">
+      <h2>Datos de la instalación</h2>
+      <div class="box warn"><p>Aquí no hay claves, pero sí direcciones e identificadores. No compartas esta página.</p></div>
+      <div class="tbl"><table>
+        <thead><tr><th>Elemento</th><th>Valor</th></tr></thead>
+        <tbody>
+          <tr><td>n8n</td><td><code>https://botrue-n8n.zbb3az.easypanel.host</code> (v2.21, EasyPanel)</td></tr>
+          <tr><td>Evolution API</td><td><code>https://botrue-evolution.zbb3az.easypanel.host</code> (v2.3.7, Baileys)</td></tr>
+          <tr><td>Instancia / línea</td><td><code>optimizador</code> · +34 619 744 475 · perfil «Ferronol»</td></tr>
+          <tr><td>Webhook</td><td><code>…/webhook/ferronol-inspecciones</code> · evento MESSAGES_UPSERT · base64 desactivado</td></tr>
+          <tr><td>Grupo Producción</td><td><code>120363431296517952@g.us</code> («Inspecciones Producción»)</td></tr>
+          <tr><td>Grupo Seguridad</td><td><code>120363413556401002@g.us</code> («Inspecciones Seguridad»)</td></tr>
+          <tr><td>Cuenta Google</td><td><code>ferronolconsultaia@gmail.com</code> (Gmail gratuito, no Workspace)</td></tr>
+          <tr><td>Hoja de registro</td><td><code>1rg-bBhZiGJwGonYXb3OXO9bQh0Ir5ETGxLJdZGGjwB0</code></td></tr>
+          <tr><td>Carpetas Drive</td><td>_Entrada <code>1roZk6ONRuT0RyiQeuQgTMC2tyDmWB9cT</code> · Producción <code>1m0_NOzwBRnAQui1r96yTffjXXv7Ef2HJ</code> · Seguridad <code>1JenVEIJVHib6Mt7fBV-GrapFWlHMR0e8</code></td></tr>
+          <tr><td>OAuth Google</td><td>Proyecto en Google Cloud de la cuenta de Ferronol · app «n8n Ferronol» · tipo Externo · <strong>En producción</strong> (no volver a modo prueba: los tokens caducarían cada 7 días)</td></tr>
+          <tr><td>Workflows n8n</td><td>01 <code>JfKNyozC7Ms4jSWu</code> · 02 <code>SqgXohMxQ0s7lyD9</code> · Instalar panel <code>LOiIyqyxRa3rAxpT</code></td></tr>
+          <tr><td>Credenciales n8n</td><td>Evolution API · Inspecciones (FERRO) · Anthropic (Claude) · Inspecciones (FERRO) · Google Sheets · Ferronol · Google Drive · Ferronol. Las de Evolution y Claude solo funcionan contra su propio dominio.</td></tr>
+        </tbody>
+      </table></div>
+      <p>Tus credenciales personales de Google en n8n (Google Drive/Sheets/Docs account) no se usan aquí.</p>
+    </section>
+
+    <section id="archivos">
+      <h2>Archivos y despliegue</h2>
+      <p>Carpeta del proyecto: <code>cowork-informe-personal/automatizacion-inspecciones/</code></p>
+      <div class="tbl"><table>
+        <thead><tr><th>Archivo</th><th>Qué es</th></tr></thead>
+        <tbody>
+          <tr><td><code>_fuentes/esquema.py</code></td><td>Fuente única de columnas, listas desplegables (zonas, categorías, riesgos…) y matriz de riesgo.</td></tr>
+          <tr><td><code>PROMPTS_IA.md</code></td><td>Fuente editable de los prompts de la IA.</td></tr>
+          <tr><td><code>_fuentes/gen_n8n.py</code></td><td>Genera los workflows 01 y 02 (incluye el nodo «Config base»).</td></tr>
+          <tr><td><code>_fuentes/gen_panel.py</code></td><td>Pestañas Resumen y Configuración, y el workflow «Instalar panel».</td></tr>
+          <tr><td><code>_fuentes/gen_plantilla.py</code></td><td>Plantilla .xlsx completa (para una instalación nueva).</td></tr>
+          <tr><td><code>_fuentes/desplegar.js</code></td><td>Sube 01 y 02 a n8n, asigna credenciales y los activa.</td></tr>
+          <tr><td><code>.secrets.env</code></td><td>Claves (n8n, Evolution, Claude, Google). Solo en tu PC. No subir a ningún sitio.</td></tr>
+          <tr><td><code>n8n/*.json</code></td><td>Los workflows generados (copia de seguridad importable).</td></tr>
+          <tr><td><code>guias/*.html</code></td><td>Estas guías.</td></tr>
+        </tbody>
+      </table></div>
+      <h3>Cambiar algo y desplegarlo</h3>
+      <pre>cd automatizacion-inspecciones/_fuentes
+python gen_n8n.py ../n8n      # regenera 01 y 02
+node desplegar.js            # los sube a n8n y los deja activos</pre>
+      <p>O, en Claude Code: «aplica los cambios y despliega». Las ejecuciones en curso no se pierden: el despliegue desactiva, actualiza y reactiva.</p>
+      <div class="box"><p><strong>Sin Claude Code:</strong> lo que cambia a menudo (números de aviso, nombres del personal, modelo) se cambia desde la hoja, en las pestañas Configuración y Personal. Solo hace falta desplegar para cambios de estructura: columnas, listas, prompts o lógica.</p></div>
+    </section>
+
+    <section id="modelo">
+      <h2>Modelo de IA</h2>
+      <div class="tbl"><table>
+        <thead><tr><th>Modelo</th><th>Id</th><th>Precio (entrada / salida, por millón de tokens)</th><th>Cuándo</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Haiku 5.5</strong> (actual)</td><td><code>claude-haiku-5-5</code></td><td class="num">0,10 $ / 0,50 $</td><td>Por defecto. Bueno con texto claro y fotos evidentes.</td></tr>
+          <tr><td>Sonnet 5.5</td><td><code>claude-sonnet-5-5</code></td><td class="num">2 $ / 10 $</td><td>Primer escalón si Haiku falla en la clasificación o en los detalles de las fotos.</td></tr>
+          <tr><td>Opus 5.5</td><td><code>claude-opus-5-5</code></td><td class="num">4 $ / 20 $</td><td>Máxima precisión: se usó en las primeras pruebas. Solo si Sonnet tampoco basta.</td></tr>
+        </tbody>
+      </table></div>
+      <h3>Cuándo subir de modelo</h3>
+      <ul>
+        <li>Más de 1 de cada 5 reportes con <em>Revisar = Sí</em> por errores de la IA (no por falta de texto del trabajador).</li>
+        <li>Fallos repetidos en lo visual: EPI mal identificado, zona equivocada, foto descrita de forma incorrecta.</li>
+        <li>Niveles de riesgo poco coherentes: probabilidad o consecuencias claramente infravaloradas.</li>
+      </ul>
+      <h3>Cómo cambiarlo (sin desplegar)</h3>
+      <ol>
+        <li>En la hoja, pestaña <strong>Configuración</strong>, añade una fila: Parámetro <code>MODELO</code>, Valor <code>sonnet</code> (o <code>haiku</code> / <code>opus</code>).</li>
+        <li>Se aplica en la siguiente ejecución (2 min). Para volver atrás, borra la fila.</li>
+      </ol>
+      <p>El cliente no necesita saber que existe esta fila: no aparece en la guía del administrador. El valor por defecto (si no hay fila) está en el nodo «Config base» del workflow 02.</p>
+      <h3>Cómo medir si Haiku basta</h3>
+      <p>Durante el primer mes, revisa cada reporte y anota en una columna aparte si la IA acertó. Con 30-50 reportes ya hay una cifra fiable. Si quieres comparar modelos, se pueden reprocesar los mismos reportes con Sonnet (coste de céntimos) y contrastar.</p>
+      <div class="box"><p>Haiku 5.5 no tiene «fallback» automático si rechaza un reporte (Opus y Sonnet sí). En la práctica casi no pasa con estos contenidos; si pasa, el reporte se guarda con <em>Revisar = Sí</em> y el motivo.</p></div>
+    </section>
+
+    <section id="costes">
+      <h2>Costes</h2>
+      <h3>Gastado en pruebas hasta hoy</h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Prueba</th><th>Modelo</th><th>Tokens (entrada / salida)</th><th>Coste</th></tr></thead>
+        <tbody>
+          <tr><td>PRO-0001 (1 foto)</td><td>Opus 5.5</td><td class="num">5.798 / 302</td><td class="num">0,029 $</td></tr>
+          <tr><td>SEG-0001 (1 foto)</td><td>Opus 5.5</td><td class="num">6.039 / 429</td><td class="num">0,033 $</td></tr>
+          <tr><td>Prueba de Haiku (solo texto)</td><td>Haiku 5.5</td><td class="num">3.350 / 433</td><td class="num">0,0006 $</td></tr>
+          <tr><td><strong>Total</strong></td><td></td><td></td><td class="num"><strong>≈ 0,06 $</strong></td></tr>
+        </tbody>
+      </table></div>
+      <h3>Diciembre: 100 reportes por grupo (200 en total)</h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Modelo</th><th>1 foto por reporte</th><th>3 fotos por reporte</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Haiku 5.5</strong></td><td class="num">≈ 0,16 $</td><td class="num">≈ 0,36 $</td></tr>
+          <tr><td>Sonnet 5.5</td><td class="num">≈ 3,2 $</td><td class="num">≈ 7,3 $</td></tr>
+          <tr><td>Opus 5.5</td><td class="num">≈ 6,3 $</td><td class="num">≈ 14,7 $</td></tr>
+        </tbody>
+      </table></div>
+      <p>Estimación: unos 3.300 tokens de instrucciones y texto + unos 2.600 por foto (máximo 3 por reporte) y unos 400 de respuesta. Las cifras reales salen en la consola de Anthropic (Usage).</p>
+      <h3>Calculadora</h3>
+      <div class="calc">
+        <div class="f">
+          <label for="r-pro">Reportes al mes · Producción<input type="number" id="r-pro" min="0" value="100"></label>
+          <label for="r-seg">Reportes al mes · Seguridad<input type="number" id="r-seg" min="0" value="100"></label>
+          <label for="r-fot">Fotos por reporte (la IA ve como máximo 3)<input type="number" id="r-fot" min="0" max="10" value="1"></label>
+          <label for="r-mod">Modelo<select id="r-mod"><option value="h">Haiku 5.5</option><option value="s">Sonnet 5.5</option><option value="o">Opus 5.5</option></select></label>
+        </div>
+        <div class="out" aria-live="polite">
+          <small>Coste estimado de IA al mes</small>
+          <div class="big" id="r-out">0 $</div>
+          <small id="r-det"></small>
+        </div>
+      </div>
+      <h3>Otros costes</h3>
+      <ul>
+        <li><strong>Servidor</strong> (n8n + Evolution): el VPS que ya tienes; esto apenas añade carga.</li>
+        <li><strong>Google</strong>: gratis. La cuenta Gmail tiene 15 GB compartidos entre Gmail, Drive y Fotos. Una foto de WhatsApp ocupa unos 150-300 KB, así que caben más de 50.000. Los vídeos ocupan bastante más. Si se llena: Google One de 100 GB.</li>
+        <li><strong>WhatsApp con Evolution</strong>: gratis. Con la API oficial de Meta habría coste por mensaje iniciado por el negocio (ver Plan B).</li>
+      </ul>
+    </section>
+
+    <section id="prompts">
+      <h2>Prompts</h2>
+      <p>Los prompts viven en <code>PROMPTS_IA.md</code>, en bloques <code>```text</code>. Cada grupo recibe:</p>
+      <ul>
+        <li><strong>Producción:</strong> ROL PRODUCCIÓN + CONTEXTO + CATEGORÍAS PRODUCCIÓN + REGLAS COMUNES + REGLAS PRODUCCIÓN.</li>
+        <li><strong>Seguridad:</strong> ROL SEGURIDAD + CONTEXTO + REGLAS COMUNES + REGLAS SEGURIDAD.</li>
+      </ul>
+      <p>Después recibe las fotos (máximo 3) y el texto del trabajador, y devuelve un JSON con campos fijos. En el prompt hay dos marcadores que se rellenan en cada reporte desde la pestaña Catálogo: <code>{CATALOGO}</code> (clientes y zonas, en CONTEXTO) y <code>{CATEGORIAS}</code> (en CATEGORÍAS PRODUCCIÓN). No los borres. Cliente y zona son texto libre; las categorías se limitan a las del Catálogo; tipos de hallazgo, riesgos, prioridad, etc. siguen fijados en <code>esquema.py</code>.</p>
+      <h3>Procedimiento para mejorarlos</h3>
+      <ol>
+        <li>Edita el texto dentro de los bloques y guarda.</li>
+        <li>En Claude Code: «aplica los prompts». Se regenera el workflow 02, se compara con lo que hay en producción y se despliega.</li>
+        <li>Prueba con 2-3 reportes reales y revisa las filas.</li>
+      </ol>
+      <h3>Ideas con tu criterio de PRL</h3>
+      <ul>
+        <li>Ejemplos calibrados de probabilidad y consecuencias para los riesgos típicos de la planta.</li>
+        <li>Medidas preventivas siguiendo la jerarquía (eliminar, sustituir, ingeniería, administrativas, EPI).</li>
+        <li>Cuándo considerar <em>trabajo paralizado</em> o plazo <em>Inmediato</em>.</li>
+        <li>Vocabulario de la planta (equipos, zonas, abreviaturas) para que la IA entienda los textos informales.</li>
+      </ul>
+    </section>
+
+    <section id="multicliente">
+      <h2>Clientes, zonas y categorías (multicliente)</h2>
+      <p>Los dos grupos sirven para cualquier cliente e instalación. Desde el 25/11:</p>
+      <ul>
+        <li>Columna <code>Cliente</code> en Producción y Seguridad (después de Telefono). La IA la rellena a partir del texto y las fotos; si no consta, «No consta» y <em>Revisar = Sí</em>.</li>
+        <li><code>Zona</code> es texto libre: si coincide con una zona del catálogo de ese cliente usa ese nombre exacto; si no, describe la zona en 2-5 palabras.</li>
+        <li><code>Categoria_Informe</code>: la IA elige solo entre las categorías del Catálogo. Si el cliente tiene categorías propias, usa esas; si no, las generales (las 10 del informe de Bio Oils, que sirven para cualquier cliente).</li>
+        <li>Carpetas y archivos llevan el cliente: <code>2026-12-03 · PRO-0021 · Bio Oils · Talleres</code>.</li>
+        <li>El panel Resumen tiene un filtro por cliente y listas por categoría y por cliente que se rellenan solas.</li>
+        <li>En <code>Empresa_Implicada</code> y <code>Responsable</code>, «Bio Oils» pasa a ser «Cliente».</li>
+      </ul>
+      <h3>Cómo añadir (sin Claude Code ni despliegue)</h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Qué</th><th>Fila en la pestaña Catálogo</th></tr></thead>
+        <tbody>
+          <tr><td>Cliente nuevo</td><td>Tipo <code>Cliente</code> · Cliente vacío · Valor = nombre · Descripción = cómo lo escribe el personal (apodos, abreviaturas, nombre de la planta)</td></tr>
+          <tr><td>Zona</td><td>Tipo <code>Zona</code> · Cliente = a quién pertenece · Valor = nombre de la zona</td></tr>
+          <tr><td>Categoría general</td><td>Tipo <code>Categoría</code> · Cliente vacío · Valor = nombre · Descripción = cuándo se usa</td></tr>
+          <tr><td>Categoría solo de un cliente</td><td>Tipo <code>Categoría</code> · Cliente = ese cliente · Valor · Descripción</td></tr>
+        </tbody>
+      </table></div>
+      <p>El workflow lee el Catálogo en cada ejecución (cada 2 minutos). Si la pestaña no existe o está vacía, usa el catálogo inicial de <code>esquema.py</code> (<code>CATALOGO_INICIAL</code>).</p>
+      <div class="box"><p><strong>Consejos:</strong> la descripción de cada categoría es lo que la IA lee para decidir, así que escríbela con criterios claros y excluyentes. Cuantas más categorías y zonas, más largo el prompt: con Haiku el coste sigue siendo de fracciones de céntimo. Para que el informe mensual de un cliente use sus propios puntos, crea sus categorías con Cliente = ese cliente.</p></div>
+      <p>Seguridad no cambia: tipos de hallazgo, riesgos y matriz INSHT son comunes a todos los clientes.</p>
+    </section>
+
+    <section id="config">
+      <h2>Configuración y panel (en la hoja)</h2>
+      <h3>Pestaña Configuración</h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Parámetro</th><th>Visible para el cliente</th><th>Valor</th></tr></thead>
+        <tbody>
+          <tr><td><code>ALERTA_NUMEROS</code></td><td>Sí</td><td>Teléfonos separados por comas. Si tienen 9 cifras, se les añade el 34.</td></tr>
+          <tr><td><code>MODELO</code></td><td>No (añadir la fila solo cuando haga falta)</td><td><code>haiku</code> · <code>sonnet</code> · <code>opus</code></td></tr>
+          <tr><td><code>ESPERA_MIN</code></td><td>No</td><td>Minutos de silencio antes de procesar (2 por defecto).</td></tr>
+          <tr><td><code>VENTANA_MIN</code></td><td>No</td><td>Minutos entre fotos para que sean el mismo reporte (3).</td></tr>
+          <tr><td><code>MAX_FOTOS_IA</code></td><td>No</td><td>Fotos que ve la IA por reporte (3). Más fotos = más coste.</td></tr>
+        </tbody>
+      </table></div>
+      <p>Si la pestaña no existe o tiene un valor inválido, el workflow usa los valores del nodo «Config base» y sigue funcionando.</p>
+      <h3>Instalar el panel (una vez)</h3>
+      <ol>
+        <li>En n8n, abre el workflow <strong>Inspecciones · Instalar panel (ejecutar una vez)</strong>.</li>
+        <li>Pulsa <strong>Execute workflow</strong>. Crea las pestañas Resumen, Configuración y Catálogo (con el catálogo inicial), inserta la columna <code>Cliente</code> después de Telefono en Producción y Seguridad y quita los desplegables de Zona y Categoría.</li>
+        <li>Borra las filas de prueba (PRO-0001, SEG-0001) de Producción y Seguridad: se escribieron antes del cambio a texto plano y el panel no las cuenta bien.</li>
+        <li>Se puede volver a ejecutar cuando quieras: rehace el Resumen, pero no toca Configuración ni Catálogo si ya existen.</li>
+      </ol>
+      <p>El panel localiza cada columna por su cabecera (no por posición) y cuenta por la columna Fecha como texto («2026-12-03»). Desde el 24/11 el workflow escribe las filas en modo RAW para que sea así.</p>
+      <h3>Panel más visual (opcional)</h3>
+      <p>Looker Studio (gratis): <em>lookerstudio.google.com → Crear → Fuente de datos → Hojas de cálculo de Google →</em> la hoja de registro, pestaña Producción (y otra fuente con Seguridad). Gráficos recomendados: reportes por semana, por categoría, por nivel de riesgo, y una tabla de abiertos. Comparte el informe con el cliente como «Lector».</p>
+    </section>
+
+    <section id="bot">
+      <h2>Configurar la línea del bot</h2>
+      <ol>
+        <li><strong>Teléfono dedicado</strong> con WhatsApp Business y la SIM de la línea. No usarla para nada más.</li>
+        <li><strong>Perfil:</strong> nombre «Inspecciones Ferronol», logo de Ferronol y una descripción del tipo «Línea automática de registro de inspecciones. No atiende llamadas.» Desactivar mensajes de ausencia y de bienvenida.</li>
+        <li><strong>Grupos:</strong> la línea debe estar en los dos grupos. En los ajustes de cada grupo: «Editar info del grupo: solo administradores» y mensajes temporales desactivados. Fija el mensaje con las instrucciones (está en la guía de puesta en marcha).</li>
+        <li><strong>Sesión vinculada:</strong> Evolution funciona como un «dispositivo vinculado». WhatsApp cierra los dispositivos vinculados si el teléfono principal pasa unos <strong>14 días sin conectarse</strong>. Enciende y abre WhatsApp en ese teléfono al menos una vez por semana.</li>
+        <li><strong>Evolution (ajustes de la instancia):</strong> <code>groupsIgnore: false</code> (si no, no llegan los grupos), <code>readMessages: false</code>, <code>rejectCall: true</code> con un mensaje «Línea automática, no atiende llamadas».</li>
+        <li><strong>Buen uso para evitar bloqueos:</strong> no enviar mensajes a quien no ha escrito antes ni a listas, no añadir a la línea a grupos ajenos y no cambiar de teléfono o IP a menudo. El volumen de este uso (respuestas en dos grupos propios) es de bajo riesgo.</li>
+        <li><strong>Si se desconecta:</strong> en el manager de Evolution, instancia <code>optimizador</code> → Connect → escanear el QR desde el teléfono (Dispositivos vinculados). Los mensajes enviados mientras estaba desconectado pueden no llegar: pide que se reenvíen.</li>
+      </ol>
+    </section>
+
+    <section id="entrada">
+      <h2>Carpeta _Entrada: ¿se sobrescribe?</h2>
+      <p>No. Cada foto se sube como un archivo nuevo, con su nombre original de WhatsApp, y nunca se sobrescribe otra. El flujo 2 la <strong>mueve</strong> (no la copia) a la carpeta del reporte en 2-5 minutos, así que no hay duplicados ni ocupa espacio dos veces. Lo normal es que _Entrada esté vacía.</p>
+      <p>Si se acumulan archivos ahí, algún reporte no se ha procesado: mira las ejecuciones con error del workflow 02. Cuando se arregle, se recuperan solos.</p>
+      <p>Lo que sí crece es la pestaña <strong>Mensajes</strong>, con una fila por mensaje. Archívala una vez al año: copia la pestaña y deja solo las cabeceras.</p>
+    </section>
+
+    <section id="nuevos">
+      <h2>Números que no están en Personal</h2>
+      <p>Si alguien entra en un grupo y reporta, el reporte se guarda igual:</p>
+      <ul>
+        <li><code>Reportado_Por</code> = su nombre de perfil de WhatsApp.</li>
+        <li><code>Telefono</code> = su número. Si WhatsApp oculta el número en el grupo (modo «LID»), Evolution 2.3.7 suele dar el número real igualmente, pero si no lo da se guarda el identificador interno (15 cifras, no es un teléfono).</li>
+      </ul>
+      <p>Cuando se da de alta en Personal, sus reportes nuevos salen con el nombre de la hoja. Los anteriores no cambian.</p>
+      <p>No hay lista blanca: cualquier miembro del grupo puede reportar. El control de quién reporta se hace con quién está en el grupo.</p>
+    </section>
+
+    <section id="seguridad">
+      <h2>Seguridad: estado a 24/11/2026</h2>
+      <div class="tbl"><table>
+        <thead><tr><th>Aspecto</th><th>Estado</th><th>Detalle / acción</th></tr></thead>
+        <tbody>
+          <tr><td>Cifrado en tránsito</td><td><span class="status s-ok">OK</span></td><td>Todo por HTTPS (EasyPanel, Google, Anthropic).</td></tr>
+          <tr><td>Credenciales en n8n</td><td><span class="status s-ok">OK</span></td><td>Cifradas por n8n. Evolution y Claude limitadas a su dominio. Las de Google de Ferronol, separadas de las tuyas.</td></tr>
+          <tr><td>Datos de la IA</td><td><span class="status s-ok">OK</span></td><td>API comercial de Anthropic: no se usan para entrenar por defecto; retención limitada según su política.</td></tr>
+          <tr><td>Acceso a la hoja y Drive</td><td><span class="status s-ok">OK</span></td><td>Solo la cuenta de Ferronol. Revisar con quién se comparte.</td></tr>
+          <tr><td>Cuenta Google de Ferronol</td><td><span class="status s-warn">Mejorable</span></td><td>Activar la verificación en dos pasos. Es una Gmail gratuita: para un contrato de encargado de tratamiento (RGPD) con Google, la opción correcta es Google Workspace.</td></tr>
+          <tr><td>Webhook de n8n</td><td><span class="status s-warn">Mejorable</span></td><td>La URL es pública y no tiene clave. Solo acepta los dos grupos, pero conviene añadir una cabecera secreta: credencial Header Auth en el nodo Webhook y la misma cabecera en <code>webhook.headers</code> de Evolution.</td></tr>
+          <tr><td>Historial de ejecuciones de n8n</td><td><span class="status s-warn">Mejorable</span></td><td>Guarda los datos de cada ejecución, incluidas las fotos en base64. Poner en n8n <code>EXECUTIONS_DATA_PRUNE=true</code> y <code>EXECUTIONS_DATA_MAX_AGE=168</code> (7 días), o guardar solo las ejecuciones con error.</td></tr>
+          <tr><td>Copia de mensajes en Evolution</td><td><span class="status s-warn">Mejorable</span></td><td>Evolution guarda mensajes y contactos en su base de datos. Si no se necesita: <code>DATABASE_SAVE_DATA_NEW_MESSAGE=false</code> en sus variables de entorno.</td></tr>
+          <tr><td>API key de n8n</td><td><span class="status s-warn">Revisar</span></td><td>Se creó para configurar desde Claude Code y da acceso total a n8n. Ponle caducidad o bórrala cuando no la uses (n8n → Settings → n8n API).</td></tr>
+          <tr><td>Clave de Claude</td><td><span class="status s-red">Rotar</span></td><td>Durante la configuración apareció completa en la salida de un comando en la conversación con Claude Code. Crea una nueva en console.anthropic.com, cámbiala en la credencial «Anthropic (Claude)» de n8n y en <code>.secrets.env</code>, y revoca la antigua.</td></tr>
+          <tr><td><code>.secrets.env</code></td><td><span class="status s-warn">Revisar</span></td><td>Contiene todas las claves en texto plano en tu PC. Bórralo cuando no lo necesites o guárdalo en un gestor de contraseñas.</td></tr>
+          <tr><td>RGPD</td><td><span class="status s-warn">Pendiente del cliente</span></td><td>Informar al personal (cláusula), base legal (interés legítimo / obligación en PRL), plazo de conservación de fotos y reportes, y quién accede a Seguridad.</td></tr>
+          <tr><td>WhatsApp no oficial</td><td><span class="status s-warn">Riesgo aceptado</span></td><td>Evolution usa el protocolo de WhatsApp Web. Riesgo de bloqueo bajo con este uso. Plan B: API oficial de Meta.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="servidor">
+      <h2>Alojar el sistema en otro servidor</h2>
+      <p>Para moverlo a un servidor propio del cliente o a otro VPS tuyo.</p>
+      <h3>Requisitos</h3>
+      <ul>
+        <li>VPS Linux con Docker. Mínimo 2 vCPU y 4 GB de RAM; 8 GB si luego se añade la transcripción de audios (Whisper).</li>
+        <li>Dos subdominios con HTTPS (por ejemplo <code>n8n.cliente.com</code> y <code>evolution.cliente.com</code>). EasyPanel o Coolify lo resuelven solos.</li>
+        <li>Servicios: n8n + PostgreSQL; Evolution API + PostgreSQL + Redis (plantillas de EasyPanel).</li>
+      </ul>
+      <h3>Variables importantes</h3>
+      <pre># n8n
+N8N_ENCRYPTION_KEY=...           # guárdala: sin ella no se pueden leer las credenciales de una copia
+GENERIC_TIMEZONE=Europe/Madrid
+EXECUTIONS_DATA_PRUNE=true
+EXECUTIONS_DATA_MAX_AGE=168
+N8N_PUBLIC_API_DISABLED=false    # solo si vas a desplegar con desplegar.js
+# Evolution
+AUTHENTICATION_API_KEY=...       # clave global
+DATABASE_SAVE_DATA_NEW_MESSAGE=false</pre>
+      <h3>Pasos</h3>
+      <ol>
+        <li>Levanta n8n y Evolution, y comprueba que abren por HTTPS.</li>
+        <li>En el nuevo n8n crea una API key y pon la URL y la clave en <code>.secrets.env</code>.</li>
+        <li>Crea las 4 credenciales (Evolution, Anthropic, Google Sheets, Google Drive). En Google Cloud, añade la nueva <em>Redirect URL</em> de n8n al cliente OAuth. Copia los nuevos ids de credencial en <code>desplegar.js</code>.</li>
+        <li>En <code>gen_n8n.py</code> (bloque CONFIG_COMUN) cambia <code>EVOLUTION_URL</code> y, si cambia, el nombre de la instancia. Después: <code>python gen_n8n.py ../n8n && node desplegar.js</code>.</li>
+        <li>En el nuevo Evolution crea la instancia y escanea el QR con el teléfono de la línea. En el teléfono, cierra antes la sesión vinculada del servidor antiguo.</li>
+        <li>Configura el webhook de la instancia hacia <code>https://NUEVO-N8N/webhook/ferronol-inspecciones</code> (MESSAGES_UPSERT, base64 desactivado).</li>
+        <li>Si la línea es la misma, los JID de los grupos no cambian. Si es otra línea, sácalos con <code>GET /group/fetchAllGroups/{instancia}?getParticipants=true</code> y cámbialos en CONFIG_COMUN.</li>
+        <li>Haz una prueba por grupo y apaga los workflows del servidor antiguo.</li>
+      </ol>
+      <p>La hoja y las carpetas de Drive no se mueven: siguen en la cuenta de Google de Ferronol.</p>
+      <h3>Copias de seguridad</h3>
+      <ul>
+        <li>Volcado diario de las bases de datos PostgreSQL de n8n y Evolution (EasyPanel tiene backups programados).</li>
+        <li><code>N8N_ENCRYPTION_KEY</code> guardada aparte.</li>
+        <li>Los workflows ya están en <code>n8n/*.json</code> dentro del proyecto.</li>
+      </ul>
+    </section>
+
+    <section id="meta">
+      <h2>Plan B: API oficial de WhatsApp (Meta Cloud API)</h2>
+      <div class="box red"><p><strong>Diferencia clave: los grupos.</strong> La API oficial está pensada para conversaciones 1 a 1 entre empresa y cliente. El soporte de grupos es reciente y limitado (grupos creados por la empresa, con límites de participantes y requisitos de cuenta). Antes de migrar, comprueba en la documentación de Meta qué permite en ese momento.</p></div>
+      <h3>Diseño recomendado si hay que migrar</h3>
+      <ul>
+        <li><strong>Chat directo con la línea</strong> en lugar de grupos: cada trabajador escribe a «Inspecciones Ferronol».</li>
+        <li><strong>Producción o Seguridad:</strong> dos números oficiales, o un número con un botón o menú («¿Producción o Seguridad?») antes de enviar la foto.</li>
+        <li>La confirmación llega en privado a quien reporta. El antes/después se vincula igual, respondiendo a la confirmación.</li>
+        <li>Se pierde la visibilidad del grupo. Si se quiere, un resumen diario a un grupo o lista de responsables.</li>
+      </ul>
+      <h3>Pasos</h3>
+      <ol>
+        <li>Cuenta de Meta Business (business.facebook.com) a nombre de Ferronol y verificación de la empresa (CIF y documentación).</li>
+        <li>Crear una app en developers.facebook.com con el producto WhatsApp y una cuenta de WhatsApp Business (WABA).</li>
+        <li>Registrar un número. Un número registrado en la API deja de funcionar en la app de WhatsApp: usa uno nuevo o da de baja el actual antes.</li>
+        <li>Crear un <em>usuario del sistema</em> con token permanente (permisos <code>whatsapp_business_messaging</code> y <code>whatsapp_business_management</code>).</li>
+        <li>Opción A: conectar ese número a <strong>Evolution</strong> con su integración de WhatsApp Business (Cloud API). Los workflows cambian poco: payload del webhook y descarga de fotos. Opción B: webhook de Meta directo a n8n (nodos WhatsApp de n8n) y reescribir el flujo 1.</li>
+        <li>Plantillas: los mensajes que envía la empresa fuera de la ventana de 24 h (por ejemplo el <strong>aviso a prevención</strong> a alguien que no ha escrito) exigen una <strong>plantilla aprobada</strong> por Meta (categoría «Utilidad»). Las respuestas dentro de las 24 h a quien acaba de reportar no la necesitan.</li>
+        <li>Pruebas, documentar el nuevo procedimiento y cambiar la guía del trabajador.</li>
+      </ol>
+      <h3>Coste</h3>
+      <p>Las respuestas dentro de la ventana de 24 h a quien escribe son gratuitas. Los mensajes con plantilla (avisos) se cobran por mensaje, del orden de céntimos en España. Consulta la tarifa vigente de Meta.</p>
+      <h3>Para estar preparado</h3>
+      <ul>
+        <li>Ten creada y verificada la cuenta de Meta Business desde ya: la verificación puede tardar días.</li>
+        <li>Guarda los JSON de los workflows y este manual. La lógica de IA, Drive y hoja no cambia con la migración.</li>
+        <li>Si Evolution se bloquea: no reconectes el mismo número una y otra vez; espera y revisa el motivo en la app.</li>
+      </ul>
+    </section>
+
+    <section id="mantenimiento">
+      <h2>Mantenimiento</h2>
+      <div class="tbl"><table>
+        <thead><tr><th>Cada</th><th>Tarea</th></tr></thead>
+        <tbody>
+          <tr><td>Semana</td><td>Mirar las ejecuciones con error en n8n (workflows 01 y 02). Comprobar que _Entrada está vacía. Abrir WhatsApp en el teléfono de la línea.</td></tr>
+          <tr><td>Mes</td><td>Revisar el consumo en console.anthropic.com. Revisar el porcentaje de <em>Revisar = Sí</em> para decidir el modelo.</td></tr>
+          <tr><td>Año</td><td>Archivar la pestaña Mensajes. Revisar el espacio de Drive.</td></tr>
+          <tr><td>Si cambia la contraseña de Google</td><td>Volver a pulsar «Sign in with Google» en las dos credenciales de Google de Ferronol.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="problemas">
+      <h2>Problemas frecuentes</h2>
+      <div class="tbl"><table>
+        <thead><tr><th>Síntoma</th><th>Causa probable</th><th>Solución</th></tr></thead>
+        <tbody>
+          <tr><td>El bot no contesta y en Mensajes no aparece nada</td><td>Evolution desconectado o webhook mal</td><td>Estado de la instancia en el manager; reconectar con QR; revisar el webhook.</td></tr>
+          <tr><td>Aparece en Mensajes pero no hay reporte</td><td>Fallo en el workflow 02</td><td>Ejecuciones de 02 → nodo en rojo. Se reintenta solo a los 15 min.</td></tr>
+          <tr><td><code>Unable to sign without access token</code></td><td>Credencial de Google sin conectar o caducada</td><td>Sign in with Google en «Google Drive · Ferronol» o «Google Sheets · Ferronol». Ojo: no en las personales.</td></tr>
+          <tr><td>Reportes con «Clasificación automática fallida»</td><td>Sin saldo en Anthropic, clave revocada o caída</td><td>Recargar saldo o cambiar la clave en la credencial. Los reportes ya están guardados: corregir a mano.</td></tr>
+          <tr><td>No llegan los avisos de seguridad</td><td>Número mal escrito en Configuración</td><td>Prefijo de país, sin «+». Que el destinatario escriba antes a la línea.</td></tr>
+          <tr><td>El panel muestra ceros</td><td>Filas antiguas guardadas como fecha</td><td>Las filas nuevas son texto. Borra las de prueba o escribe la fecha como texto.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="pendientes">
+      <h2>Pendientes y mejoras</h2>
+      <ol>
+        <li>Ejecutar el instalador del panel y borrar las filas de prueba.</li>
+        <li>Completar el Catálogo: zonas de Impala y de otros clientes, y categorías propias si algún cliente usa otro informe.</li>
+        <li>Rotar la clave de Claude.</li>
+        <li>Seguridad: cabecera secreta en el webhook, poda de ejecuciones en n8n, verificación en dos pasos en Google.</li>
+        <li>Números definitivos de prevención en Configuración.</li>
+        <li>Notas de voz con Whisper en el servidor.</li>
+        <li>Informe mensual automático a partir de la hoja.</li>
+        <li>Recordatorio semanal de reportes abiertos.</li>
+        <li>Panel web propio (opción B), descartado por ahora.</li>
+      </ol>
+    </section>
+
+    <footer>Manual interno · Automatización de inspecciones Ferronol · Actualizar cuando cambie la instalación.</footer>
+  </main>
+</div>
+
+<script>
+const PRICE = { h:[0.10,0.50], s:[2,10], o:[4,20] };
+const ids = ['r-pro','r-seg','r-fot','r-mod'];
+function calc(){
+  const n = (+document.getElementById('r-pro').value || 0) + (+document.getElementById('r-seg').value || 0);
+  const f = Math.min(3, Math.max(0, +document.getElementById('r-fot').value || 0));
+  const m = PRICE[document.getElementById('r-mod').value];
+  const tin = 3300 + 2600 * f, tout = 400;
+  const per = (tin * m[0] + tout * m[1]) / 1e6;
+  const tot = per * n;
+  const fmt = v => v < 1 ? v.toFixed(2).replace('.', ',') : v.toFixed(1).replace('.', ',');
+  document.getElementById('r-out').textContent = '≈ ' + fmt(tot) + ' $';
+  document.getElementById('r-det').textContent = n + ' reportes · ≈ ' + per.toFixed(4).replace('.', ',') + ' $ por reporte · ' + tin.toLocaleString('es-ES') + ' tokens de entrada';
+}
+ids.forEach(i => document.getElementById(i).addEventListener('input', calc));
+calc();
+</script>
+
+</body></html>

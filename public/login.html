@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Acceso · Panel de inspecciones</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/static/app.css">
+</head><body>
+<div class="login">
+  <form method="post" action="/login" autocomplete="on">
+    <span class="marca">Inspecciones Ferronol</span>
+    <h1>Panel de administración</h1>
+    <p class="error" id="error" hidden></p>
+    <label for="usuario">Usuario<input id="usuario" name="usuario" autocomplete="username" required autofocus></label>
+    <label for="clave">Contraseña<input id="clave" name="clave" type="password" autocomplete="current-password" required></label>
+    <button class="btn primario" type="submit">Entrar</button>
+  </form>
+</div>
+<script>
+const e = new URLSearchParams(location.search).get('e');
+if (e) { const el = document.getElementById('error'); el.hidden = false;
+  el.textContent = e === 'bloqueado' ? 'Demasiados intentos. Espera 15 minutos.' : 'Usuario o contraseña incorrectos.'; }
+</script>
+</body></html>

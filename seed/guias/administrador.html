@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+<title>Registro de inspecciones Ferronol</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: índice lateral fijo + columna de contenido; en móvil el índice pasa arriba como fila de enlaces */
+:root{
+  --bg:#f4f5f6; --paper:#fff; --ink:#1b2024; --muted:#5d6670; --line:#dde1e5;
+  --red:#a20000; --red-soft:#f7e3e3; --steel:#1f497d; --steel-soft:#e3ebf5; --ok:#2f7d4f; --ok-soft:#e1f2e7;
+  --l-triv:#c6efce; --l-tol:#e2efda; --l-mod:#ffeb9c; --l-imp:#f8cbad; --l-int:#ff7c80; --l-ink:#1b2024;
+  --display:"Archivo",system-ui,sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#14181b; --paper:#1c2226; --ink:#e8ecef; --muted:#9aa5ae; --line:#2e363c;
+  --red:#ff6b6b; --red-soft:#3a1d1f; --steel:#8db4e8; --steel-soft:#1d2a3a; --ok:#6fcf97; --ok-soft:#173226;
+  --l-triv:#3c6b47; --l-tol:#4d6b3c; --l-mod:#7a6a1e; --l-imp:#8a4b2c; --l-int:#9b2f35; --l-ink:#f3f5f6; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14181b; --paper:#1c2226; --ink:#e8ecef; --muted:#9aa5ae; --line:#2e363c;
+  --red:#ff6b6b; --red-soft:#3a1d1f; --steel:#8db4e8; --steel-soft:#1d2a3a; --ok:#6fcf97; --ok-soft:#173226;
+  --l-triv:#3c6b47; --l-tol:#4d6b3c; --l-mod:#7a6a1e; --l-imp:#8a4b2c; --l-int:#9b2f35; --l-ink:#f3f5f6; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr);gap:20px}}
+nav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);align-self:start;display:grid;gap:2px}
+nav a{color:var(--muted);text-decoration:none;font-size:14px;padding:6px 10px;border-radius:6px;border-left:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--ink);background:var(--paper);border-left-color:var(--red);outline:none}
+@media (max-width:860px){nav{position:static;display:flex;flex-wrap:wrap;gap:6px}nav a{border:1px solid var(--line);border-radius:999px;padding:4px 10px}}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,5vw,40px);font-weight:800}
+h2{font-size:24px;font-weight:800;margin:0 0 12px;padding-top:8px}
+h3{font-size:17px;font-weight:600;margin-bottom:4px}
+p{margin:0 0 10px;max-width:68ch}
+.eyebrow{font:600 12px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--red)}
+.lead{color:var(--muted)}
+section{margin-bottom:44px;scroll-margin-top:24px}
+code,.mono{font-family:var(--mono);font-size:.9em;background:var(--paper);border:1px solid var(--line);padding:1px 5px;border-radius:4px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.card p{color:var(--muted);margin:0}
+.tree{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;font:14px/1.8 var(--mono);overflow-x:auto;white-space:pre;color:var(--ink)}
+.tree .c{color:var(--muted)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+.tbl{overflow-x:auto;background:var(--paper);border:1px solid var(--line);border-radius:10px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+tr:last-child td{border-bottom:0}
+.chip{display:inline-block;font:600 12px var(--body);padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.id{background:var(--red-soft);color:var(--red)} .chip.cl{background:#ececec;color:#444} .chip.ri{background:#fde9d9;color:#8a3b0c}
+.chip.co{background:#ededed;color:#555} .chip.fo{background:#e4ecd9;color:#3f5a1c} .chip.se{background:var(--steel-soft);color:var(--steel)}
+.chip.re{background:#efe3f7;color:#6a2c91} .chip.ct{background:#e6e6e6;color:#444}
+:root[data-theme="dark"] .chip:not(.id):not(.se){filter:brightness(.9) saturate(.9);color:#1b2024}
+details.task{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px}
+details.task+details.task{margin-top:10px}
+details.task summary{cursor:pointer;font-weight:600;font-size:16px}
+details.task ol{margin:10px 0 0;padding-left:20px;display:grid;gap:6px}
+.note{border-left:3px solid var(--steel);background:var(--steel-soft);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}
+.note.red{border-color:var(--red);background:var(--red-soft)}
+/* Matriz */
+.matrix-tool{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:700px){.matrix-tool{grid-template-columns:minmax(0,1fr)}}
+.picker{display:grid;gap:14px}
+.picker fieldset{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:0;background:var(--paper)}
+.picker legend{font-weight:600;font-size:14px;padding:0 4px}
+.picker label{display:flex;gap:8px;align-items:center;padding:3px 0;cursor:pointer;font-size:14px}
+.picker input{accent-color:var(--red)}
+.grid3{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:4px;font-size:12px}
+.grid3 div{padding:8px 6px;border-radius:6px;text-align:center}
+.grid3 .h{color:var(--muted);font-weight:600;background:transparent}
+.grid3 .cell{color:var(--l-ink);font-weight:600;outline:3px solid transparent;transition:outline-color .15s}
+.grid3 .cell.on{outline-color:var(--ink)}
+.result{margin-top:12px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.result strong{font-family:var(--display);font-size:22px}
+.privacy{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.privacy .card h3{display:flex;gap:8px;align-items:center}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.dot.ok{background:var(--ok)} .dot.warn{background:#d99a00}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+
+<div class="wrap">
+  <nav aria-label="Índice">
+    <a href="#datos">Dónde están los datos</a>
+    <a href="#panel">Panel Resumen</a>
+    <a href="#registro">Leer el registro</a>
+    <a href="#riesgo">Nivel de riesgo y avisos</a>
+    <a href="#catalogo">Clientes, zonas y categorías</a>
+    <a href="#tareas">Tareas habituales</a>
+    <a href="#nuevos">Personas no registradas</a>
+    <a href="#privacidad">Seguridad y privacidad</a>
+    <a href="#no-tocar">Qué no tocar</a>
+  </nav>
+
+  <main>
+    <header style="margin-bottom:32px;display:grid;gap:8px">
+      <span class="eyebrow">Ferronol · Bio Oils · Guía del administrador</span>
+      <h1>Registro de inspecciones: consulta y gestión</h1>
+      <p class="lead">Los reportes que el personal envía por WhatsApp acaban en una hoja de Google y en carpetas de Drive, ordenados y clasificados. Esta guía explica dónde verlos, cómo leerlos y qué tareas hacer cada semana.</p>
+    </header>
+
+    <section id="datos">
+      <h2>Dónde están los datos</h2>
+      <div class="cards">
+        <div class="card"><h3>Hoja de registro</h3><p>Google Sheets en la cuenta de Ferronol. Una fila por reporte. Es donde se consulta y se gestiona todo.</p></div>
+        <div class="card"><h3>Carpetas de fotos</h3><p>Google Drive, carpeta <strong>Inspecciones Ferronol</strong>. Cada reporte tiene su carpeta con sus fotos.</p></div>
+        <div class="card"><h3>Grupos de WhatsApp</h3><p><strong>Inspecciones Producción</strong> e <strong>Inspecciones Seguridad</strong>. El sistema confirma cada reporte en el grupo.</p></div>
+      </div>
+      <h3 style="margin-top:22px">Cómo se ordenan las fotos en Drive</h3>
+      <div class="tree">Inspecciones Ferronol/
+├── _Entrada            <span class="c">← paso intermedio: debe estar vacía</span>
+├── Producción/
+│   └── 2026-12/
+│       └── 2026-12-03 · PRO-0021 · Bio Oils · Talleres/
+│           ├── 2026-12-03_09h41_PRODUCCION_PRO-0021_Bio-Oils_Talleres_antes_01.jpg
+│           └── 2026-12-03_09h41_PRODUCCION_PRO-0021_Bio-Oils_Talleres_antes_02.jpg
+└── Seguridad/
+    └── 2026-12/
+        └── 2026-12-03 · SEG-0007 · Impala · Cargaderos/
+            └── 2026-12-03_10h15_SEGURIDAD_SEG-0007_Impala_Cargaderos_foto_01.jpg</div>
+      <p style="margin-top:10px">Cada foto lleva en el nombre la fecha y hora de envío, el grupo, el número de reporte, el cliente, la zona y si es el antes o el después. Desde la hoja, la columna <code>Carpeta_Drive</code> abre la carpeta del reporte y <code>Enlaces_Fotos</code> abre cada foto.</p>
+      <h3 style="margin-top:22px">Fotos: se guardan todas y no se sobrescriben</h3>
+      <div class="cards">
+        <div class="card"><h3>Ninguna foto se sobrescribe</h3><p>Cada foto que llega se guarda como un archivo nuevo con un nombre único (fecha, hora, número de reporte…). Aunque dos personas manden fotos a la vez o con el mismo nombre, se conservan todas.</p></div>
+        <div class="card"><h3>Sin copias duplicadas</h3><p>La foto entra en la carpeta <strong>_Entrada</strong> y en 2 a 5 minutos se <strong>mueve</strong> (no se copia) a la carpeta de su reporte. Cada foto ocupa espacio una sola vez y _Entrada queda vacía.</p></div>
+        <div class="card"><h3>Espacio disponible</h3><p>La cuenta de Google tiene 15 GB. Una foto de WhatsApp ocupa unos 150-300 KB: caben más de 50.000 fotos. Los vídeos ocupan bastante más (varios MB por vídeo).</p></div>
+      </div>
+      <div class="note">Si algún día el espacio se queda corto, hay dos opciones: ampliar el almacenamiento de la cuenta de Google (Google One) o mover las carpetas de meses antiguos a otro almacenamiento. Para ver el espacio usado: Google Drive → Almacenamiento (abajo a la izquierda).</div>
+      <div class="note"><strong>La carpeta _Entrada</strong> es solo un paso intermedio. Si ves fotos en ella durante más de 15 minutos, avisa al soporte técnico: algún reporte no se ha procesado. No se pierde, se recupera en cuanto se arregla.</div>
+    </section>
+
+    <section id="panel">
+      <h2>Panel Resumen</h2>
+      <p>La primera pestaña de la hoja, <strong>Resumen</strong>, cuenta los reportes del mes y se actualiza sola.</p>
+      <div class="cards">
+        <div class="card"><h3>Cambiar de mes o de cliente</h3><p>Escribe el año, el número del mes (1 a 12) y, si quieres, un cliente en las celdas amarillas. Con el cliente vacío se cuentan todos.</p></div>
+        <div class="card"><h3>Producción</h3><p>Reportes del mes, abiertos, cerrados, con deficiencia, por revisar, reparto por categoría y por cliente.</p></div>
+        <div class="card"><h3>Seguridad</h3><p>Reportes del mes, abiertos, avisos enviados a prevención, trabajos paralizados, reparto por nivel de riesgo, por tipo de hallazgo y por cliente.</p></div>
+      </div>
+      <p style="margin-top:12px">Para ver qué reportes concretos hay detrás de cada número, usa los filtros de las pestañas Producción y Seguridad (ver <a href="#tareas">Tareas habituales</a>).</p>
+    </section>
+
+    <section id="registro">
+      <h2>Leer el registro</h2>
+      <p>Las pestañas <strong>Producción</strong> y <strong>Seguridad</strong> tienen una fila por reporte. Las columnas van agrupadas por color en la cabecera:</p>
+      <div class="tbl"><table>
+        <thead><tr><th>Bloque</th><th>Columnas principales</th><th>Para qué</th></tr></thead>
+        <tbody>
+          <tr><td><span class="chip id">Identificación</span></td><td>ID_Reporte, Fecha, Hora, Semana, Mes, Reportado_Por, Telefono, Cliente</td><td>Quién, cuándo y en qué cliente o instalación. PRO-xxxx = Producción, SEG-xxxx = Seguridad.</td></tr>
+          <tr><td><span class="chip cl">Clasificación</span></td><td>Categoria_Informe (Producción), Zona, Tarea, Tipo_Hallazgo (Seguridad)</td><td>Las categorías y zonas salen de la pestaña Catálogo. Una zona que no esté en el catálogo se escribe tal como la indica el reporte.</td></tr>
+          <tr><td><span class="chip ri">Riesgo</span></td><td>Riesgo, EPI_Implicado, Probabilidad, Consecuencias, Nivel_Riesgo, Trabajo_Paralizado, Empresa_Implicada</td><td>Solo Seguridad. Ver <a href="#riesgo">Nivel de riesgo</a>.</td></tr>
+          <tr><td><span class="chip co">Contenido</span></td><td>Texto_Original, Resumen, Deficiencia, Prioridad, Desviacion_Planificacion</td><td>Texto_Original es lo que escribió el trabajador, sin cambios.</td></tr>
+          <tr><td><span class="chip fo">Fotografías</span></td><td>Fase_Fotos, ID_Vinculado, Num_Fotos, Carpeta_Drive, Enlaces_Fotos</td><td>ID_Vinculado une el después con su antes.</td></tr>
+          <tr><td><span class="chip se">Seguimiento</span></td><td>Estado, Accion_Correctora / Medidas, Responsable, Plazo, Fecha_Cierre, Alerta_Enviada</td><td>Lo que hay que gestionar. Estado: Abierto, Pendiente o Cerrado.</td></tr>
+          <tr><td><span class="chip re">Revisión</span></td><td>Confianza_IA, Revisar, Nota_Revision, Comentarios</td><td><strong>Revisar = Sí</strong> significa que una persona debe comprobar la fila.</td></tr>
+          <tr><td><span class="chip ct">Control</span></td><td>IDs_Mensajes, ID_Msg_Confirmacion, Registrado_En</td><td>Uso interno del sistema. No editar.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="note"><strong>Cómo se rellena:</strong> una IA lee el texto y las fotos de cada reporte y propone la clasificación. Cuando el texto es ambiguo, la foto no corresponde con lo descrito o falta información, baja la confianza y marca <strong>Revisar = Sí</strong> con el motivo en Nota_Revision. La clasificación es una propuesta: el criterio final es siempre del responsable.</div>
+    </section>
+
+    <section id="riesgo">
+      <h2>Nivel de riesgo y avisos a prevención</h2>
+      <p>En Seguridad, la IA estima la probabilidad y las consecuencias. El nivel lo calcula el sistema con la matriz de evaluación general de riesgos del INSHT, siempre igual. Prueba la matriz:</p>
+      <div class="matrix-tool">
+        <div class="picker">
+          <fieldset><legend>Probabilidad</legend>
+            <label><input type="radio" name="p" value="0" id="p0"> Baja · ocurrirá raras veces</label>
+            <label><input type="radio" name="p" value="1" id="p1"> Media · en algunas ocasiones</label>
+            <label><input type="radio" name="p" value="2" id="p2" checked> Alta · siempre o casi siempre</label>
+          </fieldset>
+          <fieldset><legend>Consecuencias</legend>
+            <label><input type="radio" name="c" value="0" id="c0"> Ligeramente dañino</label>
+            <label><input type="radio" name="c" value="1" id="c1" checked> Dañino</label>
+            <label><input type="radio" name="c" value="2" id="c2"> Extremadamente dañino</label>
+          </fieldset>
+        </div>
+        <div>
+          <div class="grid3" id="grid" aria-hidden="true"></div>
+          <div class="result" aria-live="polite" id="res"></div>
+        </div>
+      </div>
+      <p style="margin-top:14px">Cuando el nivel es <strong>Importante</strong> o <strong>Intolerable</strong>, el sistema envía al momento un WhatsApp con la foto y el resumen a los números de prevención configurados, y lo anota en la columna Alerta_Enviada.</p>
+    </section>
+
+    <section id="catalogo">
+      <h2>Clientes, zonas y categorías (pestaña Catálogo)</h2>
+      <p>Los grupos sirven para cualquier cliente e instalación. La pestaña <strong>Catálogo</strong> le dice al sistema qué clientes, zonas y categorías existen, para que los reconozca y los escriba siempre igual. Cada fila es un elemento:</p>
+      <div class="tbl"><table>
+        <thead><tr><th>Tipo</th><th>Cliente</th><th>Valor</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td>Cliente</td><td><em>(vacío)</em></td><td>Bio Oils</td><td>Planta de Bio Oils (Huelva). También «Vioil».</td></tr>
+          <tr><td>Zona</td><td>Bio Oils</td><td>Refino 1</td><td><em>(opcional)</em></td></tr>
+          <tr><td>Categoría</td><td><em>(vacío = general)</em></td><td>6. Falta de útiles y herramientas</td><td>Falta, avería o insuficiencia de medios…</td></tr>
+          <tr><td>Categoría</td><td>Impala</td><td>Calidad de limpieza</td><td>Solo para reportes de Impala.</td></tr>
+        </tbody>
+      </table></div>
+      <details class="task" open style="margin-top:12px"><summary>Añadir un cliente nuevo</summary><ol>
+        <li>Nueva fila: Tipo <strong>Cliente</strong>, Cliente vacío, Valor = nombre del cliente.</li>
+        <li>En Descripción, cómo lo suele escribir el personal (abreviaturas, apodos, nombre de la planta). Ayuda a reconocerlo.</li>
+      </ol></details>
+      <details class="task"><summary>Añadir una zona</summary><ol>
+        <li>Nueva fila: Tipo <strong>Zona</strong>, Cliente = el cliente al que pertenece, Valor = nombre de la zona.</li>
+        <li>No es obligatorio: si una zona no está en el catálogo, el sistema la escribe tal como la indica el reporte. Añadirla sirve para que salga siempre con el mismo nombre.</li>
+      </ol></details>
+      <details class="task"><summary>Añadir una categoría de producción</summary><ol>
+        <li>Nueva fila: Tipo <strong>Categoría</strong>, Valor = nombre de la categoría y, en Descripción, cuándo se usa (muy importante: es lo que lee el sistema para decidir).</li>
+        <li>Con Cliente vacío, es una categoría <strong>general</strong> para todos los clientes. Con un cliente, solo se usa para ese cliente: si un cliente tiene categorías propias, sus reportes se clasifican con ellas.</li>
+        <li>Para cambiar el nombre o la descripción de una categoría, edita su fila. Los reportes anteriores conservan la categoría con la que se guardaron.</li>
+      </ol></details>
+      <div class="note">Los cambios en el Catálogo se aplican solos en unos 2 minutos. No borres la fila de cabecera ni cambies los nombres de las columnas (Tipo, Cliente, Valor, Descripción).</div>
+    </section>
+
+    <section id="tareas">
+      <h2>Tareas habituales</h2>
+      <details class="task" open><summary>Revisar los reportes marcados (recomendado: cada día)</summary><ol>
+        <li>En la pestaña Producción o Seguridad, ve a <strong>Datos → Crear vista de filtro</strong>.</li>
+        <li>En la columna <code>Revisar</code>, filtra por <strong>Sí</strong>.</li>
+        <li>Lee <code>Nota_Revision</code> y <code>Comentarios</code>, abre las fotos y corrige lo que haga falta directamente en la celda (zona, categoría, nivel…).</li>
+        <li>Cuando la fila esté bien, cambia <code>Revisar</code> a <strong>No</strong>.</li>
+      </ol></details>
+      <details class="task"><summary>Cerrar un reporte o cambiar su estado</summary><ol>
+        <li>Lo normal es que se cierre solo: cuando alguien responde a la confirmación con la foto del después, el reporte original pasa a <strong>Cerrado</strong>.</li>
+        <li>Para cerrarlo a mano, cambia <code>Estado</code> a <strong>Cerrado</strong> y escribe la fecha en <code>Fecha_Cierre</code> (formato 2026-12-03).</li>
+        <li><strong>Pendiente</strong> se usa para deficiencias que se arrastran de meses anteriores, al preparar el informe mensual.</li>
+      </ol></details>
+      <details class="task"><summary>Añadir o cambiar los números que reciben los avisos de seguridad</summary><ol>
+        <li>Abre la pestaña <strong>Configuración</strong>.</li>
+        <li>En la fila <code>ALERTA_NUMEROS</code>, columna <strong>Valor</strong>, escribe los teléfonos con prefijo de país, sin «+» ni espacios, separados por comas. Ejemplo: <code>34600111222, 34600333444</code></li>
+        <li>No hace falta nada más: el cambio se aplica en unos 2 minutos.</li>
+        <li>Cada número tiene que poder recibir mensajes de la línea del sistema. Si alguien no recibe los avisos, que guarde ese número en sus contactos y escriba un primer mensaje.</li>
+      </ol></details>
+      <details class="task"><summary>Dar de alta a una persona para que salga con su nombre</summary><ol>
+        <li>Añádela al grupo de WhatsApp que corresponda (Producción, Seguridad o los dos).</li>
+        <li>En la pestaña <strong>Personal</strong>, añade una fila: <code>Telefono</code> con prefijo y sin «+» (34600111222), <code>Nombre</code> y <code>Puesto</code>.</li>
+        <li>Desde ese momento sus reportes nuevos salen con ese nombre en <code>Reportado_Por</code>.</li>
+      </ol></details>
+      <details class="task"><summary>Ver los reportes abiertos, por zona o por fechas</summary><ol>
+        <li>Crea una vista de filtro (Datos → Crear vista de filtro) y filtra por <code>Estado</code>, <code>Cliente</code>, <code>Zona</code>, <code>Fecha</code> o <code>Nivel_Riesgo</code>.</li>
+        <li>Las vistas de filtro no cambian lo que ven otras personas. Puedes guardarlas con un nombre y reutilizarlas.</li>
+      </ol></details>
+      <details class="task"><summary>Dar de baja a una persona</summary><ol>
+        <li>Sácala de los grupos de WhatsApp. Ya no podrá reportar.</li>
+        <li>Puedes dejar su fila en Personal para que sus reportes antiguos conserven el nombre.</li>
+      </ol></details>
+    </section>
+
+    <section id="nuevos">
+      <h2>¿Qué pasa si reporta alguien que no está en Personal?</h2>
+      <p>El reporte se registra igual. <strong>Cualquier persona que esté en el grupo puede reportar.</strong> La pestaña Personal solo sirve para mostrar un nombre correcto:</p>
+      <div class="tbl"><table>
+        <thead><tr><th>Situación</th><th>Reportado_Por</th><th>Telefono</th></tr></thead>
+        <tbody>
+          <tr><td>Está en Personal</td><td>El nombre de la hoja</td><td>Su número</td></tr>
+          <tr><td>No está en Personal</td><td>Su nombre de perfil de WhatsApp</td><td>Su número</td></tr>
+          <tr><td>WhatsApp oculta su número en el grupo (ocurre a veces por privacidad)</td><td>Su nombre de perfil de WhatsApp</td><td>Un identificador interno de WhatsApp en lugar del teléfono</td></tr>
+        </tbody>
+      </table></div>
+      <p style="margin-top:10px">Por eso conviene pedir a cada persona que tenga su <strong>nombre real</strong> en el perfil de WhatsApp, y dar de alta en Personal a quien aparezca con un nombre poco claro.</p>
+    </section>
+
+    <section id="privacidad">
+      <h2>Seguridad y privacidad de los datos</h2>
+      <p>Resumen de cómo se tratan las fotos y los datos con la configuración actual.</p>
+      <div class="privacy">
+        <div class="card"><h3><span class="dot ok"></span>Dónde se guardan</h3><p>Fotos y registro, en la cuenta de Google de Ferronol (Drive y Sheets). No se guardan copias en otros servicios de almacenamiento.</p></div>
+        <div class="card"><h3><span class="dot ok"></span>Quién accede</h3><p>Solo las personas con quien Ferronol comparta la hoja y las carpetas. Recomendamos compartir la carpeta Seguridad solo con prevención y dirección.</p></div>
+        <div class="card"><h3><span class="dot ok"></span>Análisis con IA</h3><p>Cada reporte se envía cifrado a la API de Claude (Anthropic) para clasificarlo. Con la API comercial, Anthropic no usa estos datos para entrenar sus modelos por defecto.</p></div>
+        <div class="card"><h3><span class="dot ok"></span>Transmisión</h3><p>Todas las conexiones entre WhatsApp, el servidor de automatización, Google y la IA van cifradas (HTTPS).</p></div>
+        <div class="card"><h3><span class="dot ok"></span>Minimización</h3><p>La IA tiene la instrucción de no escribir nombres de trabajadores en los resúmenes ni en las medidas. Solo se analizan los grupos configurados: el resto de chats de la línea se ignora.</p></div>
+        <div class="card"><h3><span class="dot warn"></span>Recomendaciones</h3><p>Activar la verificación en dos pasos en la cuenta de Google de Ferronol, informar al personal de que sus reportes se registran (cláusula de protección de datos) y definir cuánto tiempo se conservan las fotos.</p></div>
+      </div>
+      <div class="note red" style="margin-top:14px"><strong>Línea de WhatsApp:</strong> la línea del sistema es exclusiva para los dos grupos de inspección. No la uses para conversaciones personales ni para enviar mensajes masivos.</div>
+    </section>
+
+    <section id="no-tocar">
+      <h2>Qué no tocar</h2>
+      <div class="tbl"><table>
+        <tbody>
+          <tr><td><strong>Nombres de las pestañas</strong> y la <strong>fila 1</strong> (cabeceras) de Producción, Seguridad, Mensajes, Personal, Configuración y Catálogo</td><td>El sistema escribe por nombre: si cambian, deja de guardar.</td></tr>
+          <tr><td>Pestaña <strong>Mensajes</strong></td><td>Registro técnico del sistema. No editar ni borrar filas.</td></tr>
+          <tr><td>Columnas del bloque <strong>Control</strong></td><td>Sirven para vincular respuestas y fotos del después.</td></tr>
+          <tr><td>Carpeta <strong>_Entrada</strong></td><td>No mover ni borrar lo que haya dentro: el sistema lo está procesando.</td></tr>
+          <tr><td>Nombres de los grupos de WhatsApp o salida de la línea del sistema de un grupo</td><td>Consultar antes con el soporte técnico.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <footer>Clientes, zonas y categorías se gestionan desde la pestaña Catálogo. Para otros cambios de funcionamiento (nuevos grupos, nuevas columnas, otros tipos de hallazgo), contacta con el soporte técnico de la automatización.</footer>
+  </main>
+</div>
+
+<script>
+const P = ['Baja','Media','Alta'], C = ['Ligeramente dañino','Dañino','Extremadamente dañino'];
+const M = [['Trivial','Tolerable','Moderado'],['Tolerable','Moderado','Importante'],['Moderado','Importante','Intolerable']];
+const COL = {Trivial:'--l-triv',Tolerable:'--l-tol',Moderado:'--l-mod',Importante:'--l-imp',Intolerable:'--l-int'};
+const ACC = {Trivial:'No requiere acción específica.',Tolerable:'Mejorar la acción preventiva si es posible; comprobaciones periódicas.',Moderado:'Hacer esfuerzos para reducir el riesgo en un plazo determinado.',Importante:'No empezar o no continuar el trabajo hasta reducir el riesgo.',Intolerable:'No empezar ni continuar el trabajo hasta reducir el riesgo. Si no es posible, prohibir el trabajo.'};
+const grid = document.getElementById('grid'), res = document.getElementById('res');
+function draw(){
+  const p = +document.querySelector('input[name=p]:checked').value, c = +document.querySelector('input[name=c]:checked').value;
+  let h = '<div class="h"></div>' + C.map(x => '<div class="h">' + x + '</div>').join('');
+  P.forEach((pp, i) => { h += '<div class="h">' + pp + '</div>' + M[i].map((v, j) => '<div class="cell' + (i === p && j === c ? ' on' : '') + '" style="background:var(' + COL[v] + ')">' + v + '</div>').join(''); });
+  grid.innerHTML = h;
+  const v = M[p][c], alerta = v === 'Importante' || v === 'Intolerable';
+  res.innerHTML = '<div style="color:var(--muted);font-size:13px">' + P[p] + ' × ' + C[c] + '</div><strong>' + v + '</strong><p style="margin:6px 0 0">' + ACC[v] + '</p><p style="margin:6px 0 0;font-weight:600;color:' + (alerta ? 'var(--red)' : 'var(--ok)') + '">' + (alerta ? 'Se envía aviso por WhatsApp a prevención.' : 'Sin aviso: queda en el registro.') + '</p>';
+}
+document.querySelectorAll('.picker input').forEach(i => i.addEventListener('change', draw));
+draw();
+</script>
+
+</body></html>

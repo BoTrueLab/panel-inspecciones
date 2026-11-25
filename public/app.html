@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="csrf" content="__CSRF__">
+<title>Panel de inspecciones</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap">
+<link rel="stylesheet" href="/static/app.css">
+</head><body>
+<div class="app">
+  <aside>
+    <div class="marca"><strong>Inspecciones</strong><span>Panel de administración</span></div>
+    <span class="sec">General</span>
+    <a href="#inicio" data-v="inicio">Estado y accesos</a>
+    <span class="sec">Manuales</span>
+    <a href="#tecnico" data-v="tecnico" class="principal">Manual técnico <small>solo tú</small></a>
+    <a href="#administrador" data-v="administrador">Guía del administrador <small>cliente</small></a>
+    <a href="#trabajador" data-v="trabajador">Guía del trabajador <small>personal</small></a>
+    <span class="sec">Ajustes</span>
+    <a href="#enlaces" data-v="enlaces">Editar accesos directos</a>
+    <form method="post" action="/logout" id="salir"><button type="submit">Cerrar sesión</button></form>
+  </aside>
+  <main id="main"></main>
+</div>
+<script src="/static/app.js"></script>
+</body></html>
